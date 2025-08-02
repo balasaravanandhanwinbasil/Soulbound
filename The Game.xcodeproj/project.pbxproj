@@ -29,6 +29,23 @@
 		C8DCE3AF2E2B73560068389B /* The GameUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "The GameUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		D90116B02E3DF239009170FF /* Exceptions for "Vision UI" folder in "The GameTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Dectection.swift,
+			);
+			target = C8DCE3A42E2B73560068389B /* The GameTests */;
+		};
+		D90116B12E3DF239009170FF /* Exceptions for "Vision UI" folder in "The GameUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Dectection.swift,
+			);
+			target = C8DCE3AE2E2B73560068389B /* The GameUITests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		C8DCE3992E2B73500068389B /* The Game */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
@@ -43,6 +60,15 @@
 		C8DCE3B22E2B73560068389B /* The GameUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "The GameUITests";
+			sourceTree = "<group>";
+		};
+		D90116A32E3DF1DF009170FF /* Vision UI */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				D90116B02E3DF239009170FF /* Exceptions for "Vision UI" folder in "The GameTests" target */,
+				D90116B12E3DF239009170FF /* Exceptions for "Vision UI" folder in "The GameUITests" target */,
+			);
+			path = "Vision UI";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -75,6 +101,7 @@
 		C8DCE38E2E2B73500068389B = {
 			isa = PBXGroup;
 			children = (
+				D90116A32E3DF1DF009170FF /* Vision UI */,
 				C8DCE3992E2B73500068389B /* The Game */,
 				C8DCE3A82E2B73560068389B /* The GameTests */,
 				C8DCE3B22E2B73560068389B /* The GameUITests */,
@@ -109,6 +136,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				C8DCE3992E2B73500068389B /* The Game */,
+				D90116A32E3DF1DF009170FF /* Vision UI */,
 			);
 			name = "The Game";
 			packageProductDependencies = (
