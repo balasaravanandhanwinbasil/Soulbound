@@ -103,11 +103,7 @@ struct CameraView: UIViewControllerRepresentable {
 
 struct ContentView: View {
     var body: some View {
-        ZStack {
-            CameraView()
-                .edgesIgnoringSafeArea(.all)
-                .onAppear()
-                .padding()
+        VStack {
             VStack(spacing:20){
                 OverlayView(
                     playerHealth: 2,
@@ -121,7 +117,13 @@ struct ContentView: View {
                     .frame(maxWidth: .infinity, maxHeight: 2)
                     .padding(.horizontal, 16)
                 
-                
+            }
+            
+            ZStack {
+                CameraView()
+                    .edgesIgnoringSafeArea(.all)
+                    .onAppear()
+                    .padding()
                 AttackView()
             }
         }.onAppear {
