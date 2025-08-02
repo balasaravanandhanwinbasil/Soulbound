@@ -12,7 +12,7 @@ struct Projectile: Identifiable {
     var y: CGFloat
     let targetX: CGFloat
     let targetY: CGFloat
-    let speed: CGFloat = 5
+    let speed: CGFloat = 3
 
     mutating func updatePosition() {
         let dx = targetX - x
@@ -42,11 +42,10 @@ struct AttackView: View {
     @State private var dragStartX: CGFloat = 0
     @State private var dragStartY: CGFloat = 0
     
-    @State private var projectiles: [Projectile] = []
-    
+    @Binding var projectiles: [Projectile] 
     @Binding var health: Int
 
-    let moveSpeed: CGFloat = 20
+    let moveSpeed: CGFloat = 40
     let screenWidth = UIScreen.main.bounds.width
     let screenHeight = UIScreen.main.bounds.height
 
@@ -54,8 +53,8 @@ struct AttackView: View {
         ZStack {
             Image(systemName: "star.fill")
                 .resizable()
-                .frame(width: 60, height: 60)
-                .foregroundColor(health > 0 ? .yellow : .gray)
+                .frame(width: 30, height: 30)
+                .foregroundColor(.yellow)
                 .position(x: x, y: y)
                 .gesture(
                     DragGesture()
