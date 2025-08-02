@@ -102,34 +102,46 @@ struct CameraView: UIViewControllerRepresentable {
 
 
 struct ContentView: View {
+    @State var playerHealth: Int = 5
+    
     var body: some View {
-        VStack {
-            VStack(spacing:20){
-                OverlayView(
-                    playerHealth: 2,
-                    ultimate: 3,
-                    bossHealth: 60,
-                    bossDefense: 50
-                )
+        if playerHealth != 0 {
+            VStack {
+                VStack(spacing:20){
+                    OverlayView(
+                        playerHealth: $playerHealth,
+                        ultimate: 3,
+                        bossHealth: 60,
+                        bossDefense: 50
+                    )
+                    
+                    Rectangle()
+                        .fill(Color.white)
+                        .frame(maxWidth: .infinity, maxHeight: 2)
+                        .padding(.horizontal, 16)
+                    
+                }
                 
-                Rectangle()
-                    .fill(Color.white)
-                    .frame(maxWidth: .infinity, maxHeight: 2)
-                    .padding(.horizontal, 16)
-                
+                ZStack {
+                    CameraView()
+                        .edgesIgnoringSafeArea(.all)
+                        .onAppear()
+                        .padding()
+                    AttackView(
+                        health: $playerHealth
+                    )
+                }
+            }.onAppear {
+                UIDevice.forceOrientation(.landscapeRight)
             }
-            
-            ZStack {
-                CameraView()
-                    .edgesIgnoringSafeArea(.all)
-                    .onAppear()
-                    .padding()
-                AttackView()
+            .background(.black)
+        } else {
+            Text("GAME OVER !!!")
+            Text("I understand. You got enough on your plate already.")
+            Button("hi") {
+                print("gon")
             }
-        }.onAppear {
-            UIDevice.forceOrientation(.landscapeRight)
         }
-        .background(.black)
     }
 }
 

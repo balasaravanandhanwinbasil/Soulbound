@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct OverlayView: View {
-    @State var playerHealth: Int
+    @Binding var playerHealth: Int
     @State var ultimate: Int
     
     @State var bossHealth: Int
@@ -70,12 +70,12 @@ struct OverlayView: View {
 // UI ELEMENTS
 
 struct HealthView: View {
-    @State var health: Int
+    var health: Int
     
     var body: some View {
         HStack(spacing: 20){
             let hp = health
-                let empty = 4 - health
+                let empty = 5 - health
                 
                 ForEach(0..<hp, id: \.self) { heart in
                     Image(systemName: "heart.fill")
@@ -90,7 +90,7 @@ struct HealthView: View {
 }
 
 struct UltimateBarView: View {
-    @State var ultimate: Int
+    var ultimate: Int
     
     var body: some View {
         let remaining = 5 - ultimate
@@ -110,7 +110,7 @@ struct UltimateBarView: View {
 }
 
 struct BossHealthView: View {
-    @State var health: Int
+    var health: Int
     
     var body: some View {
         let fullhealth = 100
@@ -152,7 +152,7 @@ struct BossHealthView: View {
  
 
 struct DefenseBarView: View {
-    @State var bossDefense: Int
+    var bossDefense: Int
     
     var body: some View {
         VStack{
