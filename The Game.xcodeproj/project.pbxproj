@@ -394,6 +394,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "The-Game-Info.plist";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Let the all-seeing eye bear witness to your actions.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Let the all-seeing eye hear you too.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -432,6 +434,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "The-Game-Info.plist";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Let the all-seeing eye bear witness to your actions.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Let the all-seeing eye hear you too.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;

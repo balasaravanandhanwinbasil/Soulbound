@@ -1,0 +1,166 @@
+//
+//  OverlayView.swift
+//  The Game
+//
+//  Created by Balasaravanan Dhanwin Basil  on 26/7/25.
+//
+
+import SwiftUI
+
+struct OverlayView: View {
+    @State var playerHealth: Int
+    @State var ultimate: Int
+    
+    @State var bossHealth: Int
+    @State var bossDefense: Int
+    
+    var body: some View {
+        VStack{
+            HStack(){
+                // MARK: PLAYER UI
+                HStack(spacing:15){
+                    Text("vision is showing you...")
+                        .foregroundStyle(.white)
+                        .padding()
+                        .background(Color.black)
+                        .cornerRadius(10)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.white, lineWidth: 2)
+                        )
+                    
+                    VStack(alignment: .leading, spacing: 10){
+                        HealthView(health: playerHealth)
+                        UltimateBarView(ultimate: ultimate)
+                    }
+                }
+                
+                Spacer()
+                
+                // MARK: BOSS UI
+                VStack(spacing:20){
+                    Text("BOB, KNOWER OF ALL THINGS BRUTAL.")
+                        .font(
+                            .system(
+                                size: 20,
+                                weight: .bold,
+                                design: .default
+                            )
+                        )
+                            .bold()
+                            .foregroundStyle(
+                                LinearGradient(
+                                    colors: [.blue, .red, .orange],
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                            .multilineTextAlignment(.center)
+                    
+                    BossHealthView(health: bossHealth)
+                    DefenseBarView(bossDefense: bossDefense)
+                }
+            }
+            
+            Text("what you need to do to survive...")
+        }
+    }
+}
+
+// UI ELEMENTS
+
+struct HealthView: View {
+    @State var health: Int
+    
+    var body: some View {
+        HStack(spacing: 20){
+            let hp = health
+                let empty = 4 - health
+                
+                ForEach(0..<hp, id: \.self) { heart in
+                    Image(systemName: "heart.fill")
+                        .foregroundColor(.red)
+                }
+                ForEach(0..<empty, id: \.self) { heart in
+                    Image(systemName: "heart.fill")
+                        .foregroundColor(.gray)
+                }
+        }
+    }
+}
+
+struct UltimateBarView: View {
+    @State var ultimate: Int
+    
+    var body: some View {
+        let remaining = 5 - ultimate
+        
+        HStack{
+            ForEach(0..<ultimate, id: \.self) { bar in
+                Image(systemName: "rectangle.fill")
+                    .foregroundColor(.yellow)
+            }
+            ForEach(0..<remaining, id: \.self) { bar in
+                Image(systemName: "rectangle.fill")
+                    .foregroundColor(.gray)
+            }
+        }
+        .frame(minWidth: 150, alignment: .leading)
+    }
+}
+
+struct BossHealthView: View {
+    @State var health: Int
+    
+    var body: some View {
+        let fullhealth = 100
+        
+        var healthColor: LinearGradient {
+            switch Double(health) / Double(fullhealth) {
+            case 0.8...:
+                return LinearGradient(
+                    colors: [.green, .blue],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+            case 0.4..<0.8:
+                return LinearGradient(
+                    colors: [.blue, .yellow, .orange],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+            default:
+                return LinearGradient(
+                    colors: [.red, .orange],
+                    startPoint: .leading,
+                    endPoint: .trailing)
+            }
+        }
+        
+        ZStack(alignment: .leading) {
+            RoundedRectangle(cornerRadius: 4)
+                .frame(width: 300, height: 20)
+                .foregroundColor(.gray.opacity(0.3))
+            
+            RoundedRectangle(cornerRadius: 4)
+                .frame(width: (Double(health) / Double(fullhealth)) * 300, height: 20)
+                .foregroundStyle(healthColor)
+        }
+        .frame(width: 200)
+    }
+}
+ 
+
+struct DefenseBarView: View {
+    @State var bossDefense: Int
+    
+    var body: some View {
+        VStack{
+            Text("boss defense ui (wip)")
+        }
+    }
+}
+
+#Preview {
+    ContentView()
+}
