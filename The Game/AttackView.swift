@@ -36,8 +36,10 @@ struct Projectile: Identifiable {
 
 class ProjectileManager: ObservableObject {
     @Published var projectiles: [Projectile] = []
+    
     var playerX: CGFloat = 100
     var playerY: CGFloat = 100
+    
     var healthCallback: ((Int) -> Void)?
 
     let screenWidth = UIScreen.main.bounds.width
@@ -88,12 +90,15 @@ struct AttackView: View {
     @Binding var health: Int
     @Binding var bossHealth: Int
     @Binding var resetTrigger: Bool
+    
+    @Binding var xaxis: CGFloat
+    @Binding var yaxis: CGFloat
 
     @State private var attackType: String = "Man_ObstacleAttackView"
     private let attackTypes = ["Soul_BallAttack", "Soul_LaserAttack", "Soul_ObstacleAttack", "Man_ObstacleAttackView"]
 
     @State private var x: CGFloat = 100
-    @State private var y: CGFloat = 600 // Start on ground level for obstacle attack
+    @State private var y: CGFloat = 600
 
     @State private var timerCancellable: AnyCancellable?
     @State private var bossTimer: AnyCancellable?
@@ -106,10 +111,10 @@ struct AttackView: View {
         VStack {
             ZStack {
                 if attackType == "Soul_BallAttack" {
-                    SoulBallAttackView(manager: manager, health: $health, resetTrigger: $resetTrigger, x: $x, y: $y)
+                    SoulBallAttackView(manager: manager, health: $health, resetTrigger: $resetTrigger, x: $xaxis, y: $yaxis)
                 }
                 if attackType == "Soul_LaserAttack" {
-                    LaserAttackView(manager: manager, health: $health, resetTrigger: $resetTrigger, x: $x, y: $y)
+                    LaserAttackView(manager: manager, health: $health, resetTrigger: $resetTrigger, x: $xaxis, y: $yaxis)
                 }
                 if attackType == "Soul_ObstacleAttack" {
                     SoulObstacleAttackView(playerX: $x, playerY: $y, health: $health, resetTrigger: $resetTrigger)
