@@ -5,14 +5,29 @@
 //  Created by T Krobot on 2/8/25.
 //
 
-import Vision
-import VisionKit
 import SwiftUI
+import Vision
+import AVFoundation
 
-let image = URL(string: "image.png")!
+@MainActor
+class HumanDetector: ObservableObject {
+    @Published var xAxis: CGFloat?
+    @Published var yAxis: CGFloat?
 
-let request = DetectHumanRectanglesRequest()
+    func detect(in pixelBuffer: CVPixelBuffer) async {
+        do {
+            let observations = try await HumanRectanglesRequest().perform(on: pixelBuffer)
+            guard let first = observations.first else {
+                xAxis = nil
+                yAxis = nil
+                return
+            }
 
-let humanObservations = try await request.perform(on: image)
-
-let normalizedBoundingBox = humanObservations.first?.boundingBox
+            let box = first.boundingBox
+            xAxis = box.origin.x
+            yAxis = box.origin.y
+        } catch {
+            print("Detection failed:", error)
+        }
+    }
+}
