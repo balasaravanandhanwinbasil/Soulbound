@@ -16,7 +16,7 @@ class HumanDetector: ObservableObject {
 
     func detect(in pixelBuffer: CVPixelBuffer) async {
         do {
-            let observations = try await HumanRectanglesRequest().perform(on: pixelBuffer)
+            let observations = try await DetectHumanRectanglesRequest().perform(on: pixelBuffer)
             guard let first = observations.first else {
                 xAxis = nil
                 yAxis = nil
