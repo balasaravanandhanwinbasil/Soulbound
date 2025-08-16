@@ -5,11 +5,7 @@ struct ContentView: View {
     @State var playerHealth: Int = 5
     @State var bossHealth: Int = 100
     
-    @StateObject var projectileManager = ProjectileManager()
-    @State var resetTrigger = false
-    
-    @State var xaxis: CGFloat = 100
-    @State var yaxis: CGFloat = 100
+    @State var playerPosition: CGPoint = CGPoint(x: 100, y: 100)
     
     var body: some View {
         if (playerHealth != 0 && bossHealth != 0) {
@@ -35,12 +31,8 @@ struct ContentView: View {
                         .onAppear()
                         .padding()
                     AttackView(
-                        manager: projectileManager,
-                        health: $playerHealth,
-                        bossHealth: $bossHealth,
-                        resetTrigger: $resetTrigger,
-                        xaxis: $xaxis,
-                        yaxis: $yaxis
+                        playerPosition: $playerPosition,
+                        playerHealth: $playerHealth
                     )
                 }
             }.onAppear {
@@ -53,7 +45,6 @@ struct ContentView: View {
             Button() {
                 playerHealth = 5
                 bossHealth = 100
-                resetTrigger.toggle()
             } label: {
                 Text("reset")
             }
@@ -63,7 +54,6 @@ struct ContentView: View {
             Button() {
                 playerHealth = 5
                 bossHealth = 100
-                resetTrigger.toggle()
             } label: {
                 Text("reset")
             }
