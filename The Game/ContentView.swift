@@ -8,6 +8,9 @@ struct ContentView: View {
     @StateObject var projectileManager = ProjectileManager()
     @State var resetTrigger = false
     
+    @State var xaxis: CGFloat = 100
+    @State var yaxis: CGFloat = 100
+    
     var body: some View {
         if (playerHealth != 0 && bossHealth != 0) {
             VStack {
@@ -35,7 +38,9 @@ struct ContentView: View {
                         manager: projectileManager,
                         health: $playerHealth,
                         bossHealth: $bossHealth,
-                        resetTrigger: $resetTrigger
+                        resetTrigger: $resetTrigger,
+                        xaxis: $xaxis,
+                        yaxis: $yaxis
                     )
                 }
             }.onAppear {
