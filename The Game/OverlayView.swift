@@ -11,7 +11,7 @@ struct OverlayView: View {
     @Binding var playerHealth: Int
     @State var ultimate: Int
     
-    @State var bossHealth: Int
+    @Binding var bossHealth: Int
     @State var bossDefense: Int
     
     var body: some View {

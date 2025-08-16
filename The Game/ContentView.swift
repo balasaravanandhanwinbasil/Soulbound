@@ -1,21 +1,21 @@
 import SwiftUI
-import AVFoundation
-import Vision
-import SpriteKit
 
 
 struct ContentView: View {
     @State var playerHealth: Int = 5
-    @State var projectiles: [Projectile] = []
+    @State var bossHealth: Int = 100
+    
+    @StateObject var projectileManager = ProjectileManager()
+    @State var resetTrigger = false
     
     var body: some View {
-        if playerHealth != 0 {
+        if (playerHealth != 0 && bossHealth != 0) {
             VStack {
                 VStack(spacing:20){
                     OverlayView(
                         playerHealth: $playerHealth,
                         ultimate: 3,
-                        bossHealth: 60,
+                        bossHealth: $bossHealth,
                         bossDefense: 50
                     )
                     
@@ -32,19 +32,33 @@ struct ContentView: View {
                         .onAppear()
                         .padding()
                     AttackView(
-                        projectiles: $projectiles,
-                        health: $playerHealth
+                        manager: projectileManager,
+                        health: $playerHealth,
+                        bossHealth: $bossHealth,
+                        resetTrigger: $resetTrigger
                     )
                 }
             }.onAppear {
                 UIDevice.forceOrientation(.landscapeRight)
             }
             .background(.black)
-        } else {
+        } else if (playerHealth == 0) {
             Text("GAME OVER !!!")
             Text("I understand. You got enough on your plate already.")
             Button() {
                 playerHealth = 5
+                bossHealth = 100
+                resetTrigger.toggle()
+            } label: {
+                Text("reset")
+            }
+        } else if (bossHealth == 0){
+            Text("Wow you won")
+            Text("Congratulations on not being caseoh")
+            Button() {
+                playerHealth = 5
+                bossHealth = 100
+                resetTrigger.toggle()
             } label: {
                 Text("reset")
             }
