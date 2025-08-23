@@ -12,7 +12,7 @@ struct OverlayView: View {
     @State var ultimate: Int
     
     @Binding var bossHealth: Int
-    @State var bossDefense: Int
+    @Binding var bossDefense: Int
     
     var body: some View {
         VStack{
@@ -156,7 +156,16 @@ struct DefenseBarView: View {
     
     var body: some View {
         VStack{
-            Text("boss defense ui (wip)")
+            ZStack(alignment: .leading) {
+                RoundedRectangle(cornerRadius: 4)
+                    .frame(width: 300, height: 20)
+                    .foregroundColor(.yellow)
+                
+                RoundedRectangle(cornerRadius: 4)
+                    .frame(width: (Double(bossDefense) / Double(15)) * 300, height: 20)
+                    .foregroundStyle(.red)
+            }
+            .frame(width: 200)
         }
     }
 }

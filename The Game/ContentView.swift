@@ -4,6 +4,7 @@ import SwiftUI
 struct ContentView: View {
     @State var playerHealth: Int = 5
     @State var bossHealth: Int = 100
+    @State var breakDefense: Int = 0
     
     @State var playerPosition: CGPoint = CGPoint(x: 100, y: 100)
     
@@ -15,7 +16,7 @@ struct ContentView: View {
                         playerHealth: $playerHealth,
                         ultimate: 3,
                         bossHealth: $bossHealth,
-                        bossDefense: 50
+                        bossDefense: $breakDefense
                     )
                     
                     Rectangle()
@@ -32,7 +33,9 @@ struct ContentView: View {
                         .padding()
                     AttackView(
                         playerPosition: $playerPosition,
-                        playerHealth: $playerHealth
+                        playerHealth: $playerHealth,
+                        bossHealth: $bossHealth,
+                        breakDefense: $breakDefense
                     )
                 }
             }.onAppear {
