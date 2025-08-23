@@ -13,7 +13,7 @@ import AVFoundation
 class HumanDetector: ObservableObject {
     @Published var xAxis: CGFloat?
     @Published var yAxis: CGFloat?
-
+    
     func detect(in pixelBuffer: CVPixelBuffer) async {
         do {
             let observations = try await DetectHumanRectanglesRequest().perform(on: pixelBuffer)
@@ -22,10 +22,12 @@ class HumanDetector: ObservableObject {
                 yAxis = nil
                 return
             }
-
-            let box = first.boundingBox
-            xAxis = box.origin.x
-            yAxis = box.origin.y
+            
+            let allX = observations.map { $0.boundingBox.origin.x }
+            let allY = observations.map { $0.boundingBox.origin.y }
+            xAxis = allX.reduce(0, +) / CGFloat(allX.count)
+            yAxis = allY.reduce(0, +) / CGFloat(allY.count)
+            
         } catch {
             print("Detection failed:", error)
         }
