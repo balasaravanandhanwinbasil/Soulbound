@@ -523,7 +523,7 @@ struct AttackView: View {
     func checkCollisions() {
         let playerHalfWidth: CGFloat = 20
         let playerHalfHeight: CGFloat = isDucking ? 10 : 20
-        let playerMinX = playerPosition.x - playerHalfWidth //Want to add the x and y axis of the player here?
+        let playerMinX = playerPosition.x - playerHalfWidth
         let playerMaxX = playerPosition.x + playerHalfWidth
         let playerMinY = playerPosition.y - playerHalfHeight
         let playerMaxY = playerPosition.y + playerHalfHeight
@@ -652,8 +652,4 @@ struct SafeZoneCircle: View {
                 }
             }
     }
-}
-
-#Preview {
-    ContentView()
 }

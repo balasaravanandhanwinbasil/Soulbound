@@ -169,7 +169,3 @@ struct DefenseBarView: View {
         }
     }
 }
-
-#Preview {
-    ContentView()
-}
