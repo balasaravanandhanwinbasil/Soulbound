@@ -10,99 +10,55 @@ import AVFoundation
 import Vision
 import SpriteKit
 
-// MARK: - UIKit Camera ViewController
-
-class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
-    var session: AVCaptureSession?
-    var output = AVCapturePhotoOutput()
-    let previewLayer = AVCaptureVideoPreviewLayer()
-
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .black
-        view.layer.addSublayer(previewLayer)
-        checkCameraPermissions()
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        previewLayer.frame = view.bounds
+class CameraManager: NSObject, ObservableObject, AVCaptureVideoDataOutputSampleBufferDelegate {
+    @Published var currentPixelBuffer: CVPixelBuffer?
+    
+    let session = AVCaptureSession()
+    
+    override init() {
+        super.init()
+        setupSession()
     }
     
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .landscape
-    }
-
-    override var shouldAutorotate: Bool {
-        return true
-    }
-
-    private func checkCameraPermissions() {
-        switch AVCaptureDevice.authorizationStatus(for: .video) {
-        case .notDetermined:
-            AVCaptureDevice.requestAccess(for: .video) { granted in
-                if granted {
-                    DispatchQueue.main.async {
-                        self.setUpCamera()
-                    }
-                }
-            }
-        case .authorized:
-            setUpCamera()
-        default:
-            break
-        }
-    }
-
-    private func setUpCamera() {
-        let session = AVCaptureSession()
-        guard let device = AVCaptureDevice.default(for: .video) else { return }
-
-        do {
-            let input = try AVCaptureDeviceInput(device: device)
-            if session.canAddInput(input) {
-                session.addInput(input)
-            }
-            if session.canAddOutput(output) {
-                session.addOutput(output)
-            }
-            previewLayer.session = session
-            previewLayer.videoGravity = .resizeAspectFill
-            session.startRunning()
-            self.session = session
-        } catch {
-            print("Camera setup error: \(error)")
-        }
-    }
-}
-
-class LandscapeHostingController<Content>: UIHostingController<Content> where Content: View {
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .landscape
-    }
-    
-    override var shouldAutorotate: Bool {
-        return true
-    }
-}
-
-extension UIDevice {
-    static func forceOrientation(_ orientation: UIInterfaceOrientation) {
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
-        UIDevice.current.setValue(orientation.rawValue, forKey: "orientation")
-        if let rootVC = windowScene.windows.first?.rootViewController {
-            rootVC.setNeedsUpdateOfSupportedInterfaceOrientations()
+    func setupSession() {
+        session.beginConfiguration()
+        session.sessionPreset = .high
+        
+        guard let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back),
+              let input = try? AVCaptureDeviceInput(device: camera) else {
+            print("Cannot access camera")
+            return
         }
         
+        if session.canAddInput(input) { session.addInput(input) }
+        
+        let output = AVCaptureVideoDataOutput()
+        output.setSampleBufferDelegate(self, queue: DispatchQueue(label: "cameraQueue"))
+        if session.canAddOutput(output) { session.addOutput(output) }
+        
+        session.commitConfiguration()
+        
+        Task{
+            session.startRunning()
+        }
+    }
+    
+    func captureOutput(_ output: AVCaptureOutput,
+                       didOutput sampleBuffer: CMSampleBuffer,
+                       from connection: AVCaptureConnection) {
+        guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
+        DispatchQueue.main.async {
+            self.currentPixelBuffer = pixelBuffer
+        }
     }
 }
 
-
-struct CameraView: UIViewRepresentable {
+struct CameraPreviewView: UIViewRepresentable {
     
+    // 1.
     let session: AVCaptureSession
     
+    // 2.
     func makeUIView(context: Context) -> UIView {
         let view = UIView(frame: .zero)
         let previewLayer = AVCaptureVideoPreviewLayer(session: session)
@@ -115,6 +71,7 @@ struct CameraView: UIViewRepresentable {
         return view
     }
     
+    // 3.
     func updateUIView(_ uiView: UIView, context: Context) {
         Task {
             if let previewLayer = uiView.layer.sublayers?.first as? AVCaptureVideoPreviewLayer {

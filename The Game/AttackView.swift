@@ -25,8 +25,6 @@ struct AttackView: View {
     @State private var soulLengthTimer: CGFloat = 0
 
     // MARK: - Constants
-    let gravity: CGFloat = -0.8
-    let jumpStrength: CGFloat = 15
     let groundY: CGFloat = 670
 
     // MARK: - Body
@@ -156,7 +154,6 @@ struct AttackView: View {
 
         if isJumping {
             playerPosition.y += verticalVelocity
-            verticalVelocity += gravity
             if playerPosition.y >= groundY {
                 playerPosition.y = groundY
                 isJumping = false

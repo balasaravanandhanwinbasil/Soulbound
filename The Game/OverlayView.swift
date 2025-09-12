@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 struct OverlayView: View {
     @Binding var playerHealth: Int
@@ -14,20 +15,17 @@ struct OverlayView: View {
     @Binding var bossHealth: Int
     @Binding var bossDefense: Int
     
+    @StateObject private var detector = HumanDetector()
+    @StateObject private var camera = CameraManager()
+    
     var body: some View {
         VStack{
             HStack(){
                 // MARK: PLAYER UI
                 HStack(spacing:15){
-                    Text("vision is showing you...")
-                        .foregroundStyle(.white)
-                        .padding()
-                        .background(Color.black)
-                        .cornerRadius(10)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.white, lineWidth: 2)
-                        )
+                    
+                    CameraPreviewView(session: camera.session)
+                        .ignoresSafeArea()
                     
                     VStack(alignment: .leading, spacing: 10){
                         HealthView(health: playerHealth)
@@ -47,15 +45,15 @@ struct OverlayView: View {
                                 design: .default
                             )
                         )
-                            .bold()
-                            .foregroundStyle(
-                                LinearGradient(
-                                    colors: [.blue, .red, .orange],
-                                    startPoint: .leading,
-                                    endPoint: .trailing
-                                )
+                        .bold()
+                        .foregroundStyle(
+                            LinearGradient(
+                                colors: [.blue, .red, .orange],
+                                startPoint: .leading,
+                                endPoint: .trailing
                             )
-                            .multilineTextAlignment(.center)
+                        )
+                        .multilineTextAlignment(.center)
                     
                     BossHealthView(health: bossHealth)
                     DefenseBarView(bossDefense: bossDefense)
@@ -75,16 +73,16 @@ struct HealthView: View {
     var body: some View {
         HStack(spacing: 20){
             let hp = health
-                let empty = 5 - health
-                
-                ForEach(0..<hp, id: \.self) { heart in
-                    Image(systemName: "heart.fill")
-                        .foregroundColor(.red)
-                }
-                ForEach(0..<empty, id: \.self) { heart in
-                    Image(systemName: "heart.fill")
-                        .foregroundColor(.gray)
-                }
+            let empty = 5 - health
+            
+            ForEach(0..<hp, id: \.self) { heart in
+                Image(systemName: "heart.fill")
+                    .foregroundColor(.red)
+            }
+            ForEach(0..<empty, id: \.self) { heart in
+                Image(systemName: "heart.fill")
+                    .foregroundColor(.gray)
+            }
         }
     }
 }
@@ -149,7 +147,7 @@ struct BossHealthView: View {
         .frame(width: 200)
     }
 }
- 
+
 
 struct DefenseBarView: View {
     var bossDefense: Int

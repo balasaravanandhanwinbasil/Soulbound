@@ -12,18 +12,7 @@ import UIKit
 struct YourApp: App {
     var body: some Scene {
         WindowGroup {
-            HostingControllerWrapper()
-                .edgesIgnoringSafeArea(.all)
+            ContentView()
         }
     }
-}
-
-struct HostingControllerWrapper: UIViewControllerRepresentable {
-    typealias UIViewControllerType = LandscapeHostingController<ContentView>
-
-    func makeUIViewController(context: Context) -> LandscapeHostingController<ContentView> {
-        return LandscapeHostingController(rootView: ContentView())
-    }
-
-    func updateUIViewController(_ uiViewController: LandscapeHostingController<ContentView>, context: Context) {}
 }
