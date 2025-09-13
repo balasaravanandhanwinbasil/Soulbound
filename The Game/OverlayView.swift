@@ -10,7 +10,6 @@ import AVFoundation
 
 struct OverlayView: View {
     @Binding var playerHealth: Int
-    @State var ultimate: Int
     
     @Binding var bossHealth: Int
     @Binding var bossDefense: Int
@@ -22,15 +21,8 @@ struct OverlayView: View {
         VStack{
             HStack(){
                 // MARK: PLAYER UI
-                HStack(spacing:15){
-                    
-                    CameraPreviewView(session: camera.session)
-                        .ignoresSafeArea()
-                    
-                    VStack(alignment: .leading, spacing: 10){
+                VStack(alignment: .leading, spacing: 10){
                         HealthView(health: playerHealth)
-                        UltimateBarView(ultimate: ultimate)
-                    }
                 }
                 
                 Spacer()
@@ -77,35 +69,22 @@ struct HealthView: View {
             
             ForEach(0..<hp, id: \.self) { heart in
                 Image(systemName: "heart.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 50, height: 50)
                     .foregroundColor(.red)
             }
             ForEach(0..<empty, id: \.self) { heart in
                 Image(systemName: "heart.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 50, height: 50)
                     .foregroundColor(.gray)
             }
         }
     }
 }
 
-struct UltimateBarView: View {
-    var ultimate: Int
-    
-    var body: some View {
-        let remaining = 5 - ultimate
-        
-        HStack{
-            ForEach(0..<ultimate, id: \.self) { bar in
-                Image(systemName: "rectangle.fill")
-                    .foregroundColor(.yellow)
-            }
-            ForEach(0..<remaining, id: \.self) { bar in
-                Image(systemName: "rectangle.fill")
-                    .foregroundColor(.gray)
-            }
-        }
-        .frame(minWidth: 150, alignment: .leading)
-    }
-}
 
 struct BossHealthView: View {
     var health: Int

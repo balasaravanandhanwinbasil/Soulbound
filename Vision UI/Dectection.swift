@@ -40,8 +40,8 @@ class HumanDetector: ObservableObject {
             }
             
             if !face.isEmpty{
-                let allFaceX = body.map { $0.boundingBox.origin.x }
-                let allFaceY = body.map { $0.boundingBox.origin.y }
+                let allFaceX = face.map { $0.boundingBox.origin.x }
+                let allFaceY = face.map { $0.boundingBox.origin.y }
                 xAxisFace = allFaceX.reduce(0, +) / CGFloat(allFaceX.count)
                 yAxisFace = allFaceY.reduce(0, +) / CGFloat(allFaceY.count)
             } else {
