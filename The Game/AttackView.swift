@@ -124,6 +124,7 @@ struct AttackView: View {
             if currentMode == .man {
                 VStack {
                     Spacer()
+                        .frame(height: 25)
                     Button("DUCK TO ATTACK. JUMP TO AVOID.") {
                         breakDefenses()
                     }
@@ -145,7 +146,7 @@ struct AttackView: View {
             case .man:
                 playerPosition = CGPoint(x: UIScreen.main.bounds.midX - 167, y: groundY)
             case .soul:
-                playerPosition = CGPoint(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.midY)
+                playerPosition = CGPoint(x: UIScreen.main.bounds.midX-100, y: UIScreen.main.bounds.midY-100)
             }
             
             skipNextCollisionCheck = true
@@ -244,7 +245,11 @@ struct AttackView: View {
     
     func switchAttack() {
         if currentMode == .soul {
-            currentAttack = AttackType.allCases.randomElement()!
+            var newAttack: AttackType
+            repeat {
+                newAttack = AttackType.allCases.randomElement()!
+            } while newAttack == currentAttack
+            currentAttack = newAttack
         }
         resetAttacks()
     }
@@ -411,6 +416,7 @@ struct AttackView: View {
         lasers.removeAll()
         obstacles.removeAll()
         gravityObstacles.removeAll()
+        gravityChaser = Enemy(position: CGPoint(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.height - 100), size: .zero)
         chaser = false
     }
     
